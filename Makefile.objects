@@ -1,0 +1,10 @@
+webp.lo: /home/liexusong/Desktop/webp-master/webp.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/home/liexusong/Desktop/webp-master $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /home/liexusong/Desktop/webp-master/webp.c -o webp.lo 
+cwebp.lo: /home/liexusong/Desktop/webp-master/cwebp.c
+	$(LIBTOOL) --mode=compile $(CC)  -I. -I/home/liexusong/Desktop/webp-master $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS)  -c /home/liexusong/Desktop/webp-master/cwebp.c -o cwebp.lo 
+$(phplibdir)/webp.la: ./webp.la
+	$(LIBTOOL) --mode=install cp ./webp.la $(phplibdir)
+
+./webp.la: $(shared_objects_webp) $(WEBP_SHARED_DEPENDENCIES)
+	$(LIBTOOL) --mode=link $(CC) $(COMMON_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) -o $@ -export-dynamic -avoid-version -prefer-pic -module -rpath $(phplibdir) $(EXTRA_LDFLAGS) $(shared_objects_webp) $(WEBP_SHARED_LIBADD)
+

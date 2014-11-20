@@ -164,18 +164,16 @@ PHP_MINFO_FUNCTION(webp)
 
 PHP_FUNCTION(image2webp)
 {
-	char *input_file, *output_file;
-	int input_file_len, output_file_len;
-	int input_file_fd = -1, output_file_fd = -1;
-	struct stat sbuf;
+    char *input_file, *output_file;
+    int input_file_len, output_file_len;
+    int input_file_fd = -1, output_file_fd = -1;
+    struct stat sbuf;
 
-	char *blob = NULL;
-	int blob_size = 0;
-	int result = 1;
+    char *blob = NULL;
+    int blob_size = 0;
+    int result = 1;
 
     out_buf_t out_buf;
-    out_buf.start = emalloc(2*1024*1024); // 2m
-    out_buf.len = 0;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss",
 		&input_file, &input_file_len, &output_file, &output_file_len) == FAILURE)
@@ -206,6 +204,9 @@ PHP_FUNCTION(image2webp)
 
 	blob_size = sbuf.st_size;
 	blob = emalloc(blob_size);
+
+    out_buf.start = emalloc(blob_size * 0.8); // alloc (0.8 * original size) memory
+    out_buf.len = 0;
 
 	if (read(input_file_fd, blob, blob_size) != blob_size) {
 		php_error_docref(NULL TSRMLS_CC, E_ERROR, "Can not read from input image");
